@@ -8,6 +8,7 @@ const { convert } = require('convert-svg-to-png');
 var app = express();
 
 app.get('/api/v1/:avatar_lib/:width/:seed', function(req, res) {
+    // TODO If pass GET URL, return the S3 url
     const options = {};
     let sprites = humanSprites;
 
