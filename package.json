@@ -1,22 +1,28 @@
 {
-  "name": "despicable",
+  "name": "hello_world",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "hello world sample for NodeJS",
+  "main": "app.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
   "license": "MIT",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon --exec babel-node index.js"
-  },
   "dependencies": {
-    "@babel/preset-env": "^7.12.1",
     "@dicebear/avatars": "^4.4.0",
     "@dicebear/avatars-avataaars-sprites": "^4.4.0",
     "@dicebear/avatars-human-sprites": "^4.4.0",
+    "aws-sdk": "^2.792.0",
+    "axios": "^0.18.0",
+    "convert-svg-to-png": "^0.5.0",
     "express": "^4.17.1"
   },
+  "scripts": {
+    "test": "mocha tests/unit/",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/node": "^7.12.6",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
     "nodemon": "^2.0.6"
   }
 }
