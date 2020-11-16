@@ -1,4 +1,4 @@
-# Despicable.io - You'll adore them too!
+# Avatar API - You'll adore them too!
 
 The name is in honor of the previous API we were using, adorable.io. Thank you!
 
