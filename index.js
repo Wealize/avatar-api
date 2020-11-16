@@ -8,9 +8,9 @@ const { convert } = require('convert-svg-to-png');
 var app = express();
 
 app.get('/api/v1/:avatar_lib/:width/:seed', function(req, res) {
-    // TODO If pass GET URL, return the S3 url
     const options = {};
     let sprites = humanSprites;
+    const showUrl = req.query.show_url;
 
     switch(req.params.avatar_lib) {
         case 'human':
@@ -23,14 +23,19 @@ app.get('/api/v1/:avatar_lib/:width/:seed', function(req, res) {
 
     const avatars = new Avatars(sprites, options);
     const svg = avatars.create(req.params.seed);
-    const fileName = `${req.params.seed}.png`;
-
-    res.set('Content-Type', 'image/png');
+    const fileName = `${req.params.avatar_lib}_${req.params.width}_${req.params.seed}.png`;
 
     aws.getObject(fileName, async (err, data) => {
         if (data) {
-            console.log('Existing avatar found');
-            return res.end(data.Body);
+            if (showUrl) {
+                res.set('Content-Type', 'application/json');
+                res.end(JSON.stringify({'url': `http://${process.env.AWS_STORAGE_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`}));
+            } else {
+                res.set('Content-Type', 'image/png');
+                res.end(data.Body);
+            }
+
+            return;
         }
 
         const png = await convert(svg, {
@@ -40,9 +45,14 @@ app.get('/api/v1/:avatar_lib/:width/:seed', function(req, res) {
             },
         });
 
-            console.log('Generating new avatar');
-            aws.uploadFile(fileName, png, () => {
-            res.end(png);
+        aws.uploadFile(fileName, png, (data) => {
+            if (showUrl) {
+                res.set('Content-Type', 'application/json');
+                res.end(JSON.stringify({'url': data.Location}));
+            } else {
+                res.set('Content-Type', 'image/png');
+                res.end(png);
+            }
         });
     });
 });

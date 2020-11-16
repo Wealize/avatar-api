@@ -18,7 +18,7 @@ module.exports = {
     }
 
     s3.getObject({
-      Bucket: "despicable-assets",
+      Bucket: process.env.AWS_STORAGE_BUCKET_NAME,
       Key: fileName,
     }, cb)
   },
@@ -26,7 +26,7 @@ module.exports = {
     if (!s3) return cb();
 
     const params = {
-      Bucket: 'despicable-assets',
+      Bucket: process.env.AWS_STORAGE_BUCKET_NAME,
       Key: fileName,
       ContentType: 'image/png',
       Body: fileContent,
@@ -37,8 +37,8 @@ module.exports = {
       if (err) {
         throw err;
       }
-      cb();
-      //console.log(`File uploaded successfully. ${data.Location}`);
+
+      cb(data);
     });
   },
 };
