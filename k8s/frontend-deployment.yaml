@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: avatars
+  name: avatars
+  namespace: avatars
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: avatars
+      stage: production
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: avatars
+        stage: production
+    spec:
+      containers:
+        - name: avatars
+          image: 527196448735.dkr.ecr.eu-central-1.amazonaws.com/avatars:1.0
+          imagePullPolicy: ""
+          ports:
+          - containerPort: 3000
+          resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}
